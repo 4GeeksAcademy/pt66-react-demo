@@ -1,0 +1,35 @@
+.playing-card {
+  height: 24rem;
+  aspect-ratio: 2.75/4.75;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 4rem;
+}
+
+.playing-card.red > .top-suit,
+.playing-card.red > .bottom-suit {
+  color: red;
+}
+
+.playing-card.black > .top-suit,
+.playing-card.black > .bottom-suit {
+  color: white;
+}
+
+.playing-card > .top-suit {
+  margin-left: 1rem;
+  margin-right: auto;
+}
+
+.playing-card > .bottom-suit {
+  margin-left: auto;
+  margin-right: 1rem;
+}
+
+.playing-card > .rank {
+  font-weight: 700;
+}

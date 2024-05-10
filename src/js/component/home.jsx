@@ -1,26 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
+import { PlayingCard } from "./PlayingCard.jsx";
 
-//create your first component
+const someRank = Math.floor(Math.random() * 25);
+
 const Home = () => {
-	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
-	);
+  const [rank, setRank] = useState(someRank);
+
+  return (
+    <div className="container">
+      <div className="row">
+        <div className="col-8 offset-2">
+          <PlayingCard rank={rank} suit="?" />
+          <button
+            className="btn btn-primary"
+            onClick={() => setRank(Math.floor(Math.random() * 25))}
+          >
+            Randomize Rank
+          </button>
+          <PlayingCard rank=":)" suit="😊" />
+          <PlayingCard rank="A" suit="♦" color="red" />
+          <PlayingCard rank="3" suit="♦" color="red" />
+          <PlayingCard rank="7" suit="♣" color="black" />
+          <PlayingCard rank="2" suit="♥" color="red" />
+          <PlayingCard rank="K" suit="♠" color="black" />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Home;
