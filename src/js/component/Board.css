@@ -2,6 +2,9 @@
   background-color: #09c;
   aspect-ratio: 1;
   width: 100%;
+  max-width: 75dvh;
+  margin-left: auto;
+  margin-right: auto;
 
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
