@@ -34,7 +34,7 @@ const Board = () => {
     }
   };
 
-  const checkWin = () => {
+  const runTurn = () => {
     let hasWon = false;
     for (const line of lines) {
       let x = line.every((idx) => board[idx] === "X");
@@ -66,7 +66,7 @@ const Board = () => {
 
   useEffect(() => {
     console.log("This will run every time the board changes.");
-    checkWin();
+    runTurn();
   }, [board]);
 
   return (
