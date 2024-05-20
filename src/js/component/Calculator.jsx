@@ -36,13 +36,9 @@ const Calculator = () => {
   const input = (value) => {
     if (display === "0" && value === ".") {
       setDisplay(display + value);
-    }
-
-    if (display !== "0") {
+    } else if (display !== "0") {
       setDisplay(display + value);
-    }
-
-    if (display === "0") {
+    } else if (display === "0") {
       setDisplay(value);
     }
   };
