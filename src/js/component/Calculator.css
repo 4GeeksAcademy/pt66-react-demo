@@ -34,7 +34,7 @@
 
 .equals {
   grid-column: 4;
-  grid-row: 3 / span 3;
+  grid-row: 4 / span 2;
 }
 
 .zero {

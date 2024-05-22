@@ -1,4 +1,4 @@
-import React, { act, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Calculator.css";
 
 const CalcButton = ({ value = "X", onClick, extraClasses }) => {
@@ -19,7 +19,7 @@ const CalcDisplay = ({ register, op, display }) => {
     <>
       <div className="display">
         <div className="register">
-          {register} {op}
+          {register}&nbsp;{op}
         </div>
         <div className="active">{display}</div>
       </div>
@@ -34,7 +34,9 @@ const Calculator = () => {
   const [register, setRegister] = useState(null);
 
   const input = (value) => {
-    if (display === "0" && value === ".") {
+    if (display.includes(".") && value === ".") {
+      return;
+    } else if (display === "0" && value === ".") {
       setDisplay(display + value);
     } else if (display !== "0") {
       setDisplay(display + value);
@@ -50,15 +52,45 @@ const Calculator = () => {
     setRegister(null);
   };
 
+  const togglePositive = () => {
+    setDisplay((active * -1).toString());
+  };
+
+  const startOp = (op) => {
+    setOp(op);
+    setRegister(active);
+    setDisplay("0");
+  };
+
+  const calculate = () => {
+    let result = null;
+    if (op === "+") {
+      result = active + register;
+    } else if (op === "-") {
+      result = active - register;
+    } else if (op === "×") {
+      result = active / register;
+    } else if (op === "÷") {
+      result = register / active;
+    }
+    setDisplay(result.toString());
+    setOp(null);
+    setRegister(null);
+  };
+
+  useEffect(() => {
+    setActive(parseFloat(display));
+  }, [display]);
+
   return (
     <>
       <div className="calculator">
         <CalcDisplay register={register} display={display} op={op} />
         <div className="calculator-body">
-          <CalcButton value="+" />
-          <CalcButton value="-" />
-          <CalcButton value="×" />
-          <CalcButton value="÷" />
+          <CalcButton value="+" onClick={() => startOp("+")} />
+          <CalcButton value="-" onClick={() => startOp("-")} />
+          <CalcButton value="×" onClick={() => startOp("×")} />
+          <CalcButton value="÷" onClick={() => startOp("÷")} />
           <CalcButton value="7" onClick={() => input("7")} />
           <CalcButton value="8" onClick={() => input("8")} />
           <CalcButton value="9" onClick={() => input("9")} />
@@ -66,6 +98,7 @@ const Calculator = () => {
           <CalcButton value="4" onClick={() => input("4")} />
           <CalcButton value="5" onClick={() => input("5")} />
           <CalcButton value="6" onClick={() => input("6")} />
+          <CalcButton value="±" onClick={togglePositive} />
           <CalcButton value="1" onClick={() => input("1")} />
           <CalcButton value="2" onClick={() => input("2")} />
           <CalcButton value="3" onClick={() => input("3")} />
@@ -75,7 +108,7 @@ const Calculator = () => {
             onClick={() => input("0")}
             extraClasses="zero"
           />
-          <CalcButton value="=" extraClasses="equals" />
+          <CalcButton value="=" onClick={calculate} extraClasses="equals" />
         </div>
       </div>
     </>
