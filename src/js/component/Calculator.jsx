@@ -1,6 +1,32 @@
 import React, { useEffect, useState } from "react";
 import "./Calculator.css";
 
+const CalcTape = ({ tape, onDelete }) => {
+  return (
+    <>
+      <div className="mt-2">
+        <button className="btn btn-danger" onClick={onDelete}>
+          <i class="fa-solid fa-dumpster-fire"></i>
+        </button>
+        <ul className="tape">
+          {tape.map((item, idx) => (
+            <li key={idx}>
+              <div className="display">
+                <div className="register">
+                  {item.register}
+                  &nbsp;{item.op}
+                  &nbsp;{item.active}
+                </div>
+                <div className="active">{item.result}</div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
+  );
+};
+
 const CalcButton = ({ value = "X", onClick, extraClasses }) => {
   return (
     <>
@@ -32,7 +58,15 @@ const Calculator = () => {
   const [active, setActive] = useState(0);
   const [op, setOp] = useState(null);
   const [register, setRegister] = useState(null);
+  const [tape, setTape] = useState([]);
 
+  /**
+   * KNOWN BUG:
+   * If you type in a number after completing
+   * an operation, instead of replacing the number
+   * the calculator appends the newly input number
+   * to the end of the output of the previous op.
+   */
   const input = (value) => {
     if (display.includes(".") && value === ".") {
       return;
@@ -62,6 +96,22 @@ const Calculator = () => {
     setDisplay("0");
   };
 
+  const handleDelete = () => {
+    setTape([]);
+  };
+
+  const addToTape = (active, register, op, result) => {
+    setTape([
+      {
+        active,
+        register,
+        op,
+        result,
+      },
+      ...tape,
+    ]);
+  };
+
   const calculate = () => {
     let result = null;
     if (op === "+") {
@@ -69,10 +119,12 @@ const Calculator = () => {
     } else if (op === "-") {
       result = active - register;
     } else if (op === "×") {
-      result = active / register;
+      result = active * register;
     } else if (op === "÷") {
       result = register / active;
     }
+
+    addToTape(active, register, op, result);
     setDisplay(result.toString());
     setOp(null);
     setRegister(null);
@@ -110,6 +162,7 @@ const Calculator = () => {
           />
           <CalcButton value="=" onClick={calculate} extraClasses="equals" />
         </div>
+        <CalcTape tape={tape} onDelete={handleDelete} />
       </div>
     </>
   );
